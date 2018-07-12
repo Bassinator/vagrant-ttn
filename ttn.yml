@@ -4,5 +4,8 @@
   become: true
   become_method: sudo
 
+  vars_files:
+    - secrets.yml
+
   roles:
   - centos.ttn-provision

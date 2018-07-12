@@ -15,8 +15,8 @@
 
 - name: ttn login
   ttn-login:
-    username: bastian.greuel@gmail.com
-    password: 12345678
+    username: '{{ ttn_login }}'
+    password: '{{ ttn_pass }}'
   register: out 
 
 - name: ensure application exists

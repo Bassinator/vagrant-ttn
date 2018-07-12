@@ -1,0 +1,9 @@
+---
+os_packages:
+  - '@X Window System'
+  - '@^MATE Desktop'
+#  - 'gnome-classic-session'
+#  - 'gnome-terminal'
+#  - 'nautilus-open-terminal'
+#  - 'control-center'
+#  - 'liberation-mono-font'

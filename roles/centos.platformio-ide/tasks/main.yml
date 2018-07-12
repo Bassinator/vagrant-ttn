@@ -1,0 +1,9 @@
+- block:
+  - name: get installed atom packages
+    command:  apm list -i -b -p
+    changed_when: False
+    register: apm_installed
+  - name: install atom platromio-ide package
+    command: 'apm install platformio-ide'
+    when: apm_installed.stdout.find("platformio-ide") == -1
+  become_user: '{{ user }}'

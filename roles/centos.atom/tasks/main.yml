@@ -1,0 +1,19 @@
+- name: Install OS Packages
+  yum:
+    name: '{{ item }}'
+  with_items: '{{ os_packages }}'
+- name: install atom editor
+  yum:
+    name: https://github.com/atom/atom/releases/download/v{{ version }}/atom.x86_64.rpm
+    state: installed
+
+- block:
+  - name: get enabled atom packages
+    command: apm list -i -e -b -p
+    changed_when: False
+    become_user: '{{ user }}'
+    register: apm_enabled
+  - name: disable atom welcome package
+    command: 'apm disable welcome'
+    when: apm_enabled.stdout.find("welcome") != -1
+  become_user: '{{ user }}'

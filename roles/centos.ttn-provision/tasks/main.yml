@@ -1,0 +1,28 @@
+- name: Install OS Packages
+  yum:
+    name: '{{ item }}'
+  with_items: '{{ packages }}'
+
+- name: Install ttnctl
+  unarchive:
+    src: 'https://ttnreleases.blob.core.windows.net/release/master/ttnctl-linux-amd64.tar.gz'
+    dest: /usr/bin
+    remote_src: yes
+    mode: '755'
+    extra_opts:
+    - --transform
+    - s/^ttnctl-linux-amd64/ttnctl/
+
+- name: ttn login
+  ttn-login:
+    username: bastian.greuel@gmail.com
+    password: 12345678
+  register: out 
+
+- name: ensure application exists
+  ttn-application:
+    name: '{{ ttn_application_id }}'
+    descrition: '{{ ttn_application_description }}'
+    state: present
+
+

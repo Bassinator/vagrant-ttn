@@ -1,0 +1,18 @@
+- name: update packages
+  yum:
+    name: '*'
+    state: latest
+  register: update
+- name: Install OS Packages
+  yum:
+    name: '{{ item }}'
+  with_items: '{{ packages }}'
+- name: get keymap
+  command: localectl
+  register: locale
+  changed_when: False
+- name: set keymap
+  command: localectl set-keymap ch-de_mac
+  when: "'ch-de_mac' not in locale.stdout"
+- name: install development roles from scm
+  command: ansible-galaxy install -r /vagrant/vars/requirements.yml -p /etc/ansible/roles

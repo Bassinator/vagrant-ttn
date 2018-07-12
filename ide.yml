@@ -1,0 +1,11 @@
+---
+- name: base configure
+  hosts: all
+  become: true
+  become_method: sudo
+
+  roles:
+  - geerlingguy.repo-epel
+  - centos.mate
+#  - centos.atom
+  - centos.platformio-ide

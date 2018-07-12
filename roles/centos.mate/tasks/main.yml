@@ -1,0 +1,33 @@
+- name: Install OS Packages
+  yum:
+    name: '{{ item }}'
+  with_items: '{{ os_packages }}'
+- name: get default runlevel
+  command: systemctl get-default
+  register: runlevel
+  changed_when: False
+- name: Set graphical runlevel
+  command: systemctl set-default graphical.target
+  when: runlevel.stdout != "graphical.target"
+- name: is graphical currently active
+  command: systemctl is-active graphical.target
+  register: graphical
+  changed_when: False
+  ignore_errors: yes #there is a "bug", that exit code not 0 if inactive
+- name: Switch to graphical runlevel
+  command: systemctl isolate graphical.target
+  when: graphical.stdout != "active"
+
+- name: upload keyboard settings
+  copy:
+    src: 20-keyboard.conf
+    dest: /etc/X11/xorg.conf.d/20-keyboard.conf
+    owner: root
+    group: root
+    mode: 0644
+  register: xorg
+- name: restart lightdm to activate keyboard settings
+  service:
+    name: lightdm
+    state: restarted
+  when: xorg.changed

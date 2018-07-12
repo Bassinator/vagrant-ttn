@@ -1,0 +1,8 @@
+---
+- name: base configure
+  hosts: all
+  become: true
+  become_method: sudo
+
+  roles:
+  - centos.ttn-provision

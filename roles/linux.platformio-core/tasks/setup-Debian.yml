@@ -1,0 +1,9 @@
+- name: Install OS Packages
+  apt:
+    name: '{{ item }}'
+  with_items: '{{ packages }}'
+
+- name: install python packages
+  pip:
+    name: '{{ item }}'
+  with_items: '{{ py_packages }}'
